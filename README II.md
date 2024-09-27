@@ -262,7 +262,7 @@ export default CartButton;
 [Theming Options](https://ui.shadcn.com/docs/theming)
 [Themes](https://ui.shadcn.com/themes)
 
-- replace css variables in in globals.css
+- replace css variables in globals.css
 
 ### Providers
 
