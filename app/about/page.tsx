@@ -1,8 +1,7 @@
 
+
 function AboutPage() {
-    return (
-        <div>AboutPage</div>
-    )
+    <div>About page</div>
 }
 
 export default AboutPage;
