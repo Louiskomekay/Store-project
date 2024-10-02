@@ -1,5 +1,4 @@
 
-
 function AboutPage() {
     <div>About page</div>
 }
