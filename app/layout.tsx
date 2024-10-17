@@ -4,6 +4,7 @@ import "./globals.css";
 import Container from "@/components/global/Container";
 import Navbar from "@/components/navbar/Navbar";
 import Providers from "./Providers";
+import { ClerkProvider } from '@clerk/nextjs'
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,17 +28,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-          <Navbar />
-          <Container className="py-8">
-            {children}
-          </Container>
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Providers>
+            <Navbar />
+            <Container className="py-8">
+              {children}
+            </Container>
+          </Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
