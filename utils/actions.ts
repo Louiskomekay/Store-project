@@ -1,9 +1,9 @@
 'use server'
 
 import db from '@/utils/db';
-import { currentUser } from '@clerk/nextjs/server';
+import { currentUser, User } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { productSchema } from './schemas';
+import { productSchema, validateWithZodSchema } from './schemas';
 
 const getAuthUser = async () => {
     const user = await currentUser();
@@ -48,10 +48,14 @@ export const fetchSingleProduct = async (productID: string) => {
 }
 
 export const createProductAction = async (prevState: any, formData: FormData): Promise<{ message: string }> => {
+    const user = await getAuthUser();
     try {
         const rawData = Object.fromEntries(formData);
-        const validatedFields = productSchema.parse(rawData);
-        console.log(validatedFields);
+        const validatedFields = validateWithZodSchema(productSchema, rawData);
+
+        await db.product.create({
+            data: { ...validatedFields, image: '/image/product-3.jpg', clerkId: user.id }
+        });
 
         return { message: 'Product created' }
     } catch (error) {
