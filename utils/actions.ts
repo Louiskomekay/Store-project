@@ -1,3 +1,5 @@
+'use server'
+
 import db from '@/utils/db';
 import { redirect } from 'next/navigation';
 
@@ -30,4 +32,8 @@ export const fetchSingleProduct = async (productID: string) => {
     });
     if (!product) redirect('/products');
     return product;
+}
+
+export const createProductAction = async (prevState: any, formData: FormData): Promise<{ message: string }> => {
+    return { message: 'Product created' }
 }
