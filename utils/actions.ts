@@ -4,10 +4,18 @@ import db from '@/utils/db';
 import { currentUser, User } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { imageSchema, productSchema, validateWithZodSchema } from './schemas';
+import { uploadImage } from './supabase';
+import { revalidatePath } from 'next/cache';
 
 const getAuthUser = async () => {
     const user = await currentUser();
     if (!user) redirect('/');
+    return user;
+}
+
+const getAdminUser = async () => {
+    const user = await getAuthUser();
+    if (user.id !== process.env.ADMIN_USER_ID) redirect('/')
     return user;
 }
 
@@ -53,14 +61,40 @@ export const createProductAction = async (prevState: any, formData: FormData): P
         const rawData = Object.fromEntries(formData);
         const file = formData.get('image') as File;
         const validatedFields = validateWithZodSchema(productSchema, rawData);
-        const validateFile = validateWithZodSchema(imageSchema, { image: file });
+        const validatedFile = validateWithZodSchema(imageSchema, { image: file });
+        const fullPath = await uploadImage(validatedFile.image);
 
         await db.product.create({
-            data: { ...validatedFields, image: '/image/product-3.jpg', clerkId: user.id }
+            data: { ...validatedFields, image: fullPath, clerkId: user.id }
         });
-
-        return { message: 'Product created' }
     } catch (error) {
         return renderError(error);
     }
+    redirect('/admin/products');
 }
+
+export const fetchAdminProducts = async () => {
+    await getAdminUser();
+    const products = await db.product.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+    return products;
+}
+
+export const deleteProductAction = async (prevState: { productID: string }) => {
+    const { productID } = prevState;
+    await getAdminUser();
+    try {
+        await db.product.delete({
+            where: {
+                id: productID
+            }
+        })
+        revalidatePath('/admin/products')
+        return { message: 'Product removed' }
+    } catch (error) {
+        return renderError(error);
+    }
+};
