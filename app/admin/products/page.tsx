@@ -38,7 +38,7 @@ async function AdminProductsPage() {
                 <TableBody>
                     {items.map((item) => {
                         const { id: productID, name, company, price } = item;
-                        return <TableRow>
+                        return <TableRow key={productID}>
                             <TableCell>
                                 <Link href={`/products/${productID}`} className='underline text-muted-foreground tracking-wide capitalize'>
                                     {name}
