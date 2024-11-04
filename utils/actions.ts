@@ -173,6 +173,44 @@ export const fetchFavoriteID = async ({ productId }: { productId: string }) => {
     return favorite?.id || null;
 }
 
-export const toggleFavoriteAction = async () => {
-    return { message: 'toggle favorite action' }
+export const toggleFavoriteAction = async (prevState: { productId: string, favoriteId: string | null, pathname: string }) => {
+    const user = await getAuthUser();
+    const { productId, favoriteId, pathname } = prevState;
+
+    try {
+        if (favoriteId) {
+            await db.favorite.delete({
+                where: {
+                    id: favoriteId,
+                }
+            })
+        }
+        else {
+            await db.favorite.create({
+                data: {
+                    productId,
+                    clerkId: user.id,
+                },
+            })
+        }
+        revalidatePath(pathname);
+        return { message: favoriteId ? 'removed from favorites' : 'added to faves' }
+    } catch (error) {
+        return renderError(error)
+    }
+}
+
+export const fetchUserFavourites = async () => {
+    const user = await getAuthUser();
+
+    const favorites = await db.favorite.findMany({
+        where: {
+            clerkId: user.id
+        },
+        include: {
+            product: true
+        }
+    })
+
+    return favorites;
 }
