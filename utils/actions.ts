@@ -203,7 +203,7 @@ export const toggleFavoriteAction = async (prevState: { productId: string, favor
 export const fetchUserFavourites = async () => {
     const user = await getAuthUser();
 
-    const favorites = await db.favorite.findMany({
+    const favourites = await db.favorite.findMany({
         where: {
             clerkId: user.id
         },
@@ -212,5 +212,15 @@ export const fetchUserFavourites = async () => {
         }
     })
 
-    return favorites;
+    return favourites;
 }
+
+export const createReviewAction = async (prevState: any, formData: FormData) => {
+    return { message: 'review submitted successfully' }
+}
+
+export const fetchProductReviews = async () => { }
+export const fetchProductReviewsByUser = async () => { }
+export const deleteReviewAction = async () => { }
+export const findExistingAction = async () => { }
+export const fetchProductRating = async () => { }
