@@ -23,11 +23,11 @@ function SubmitReview({ productId }: { productId: string }) {
                     <FormContainer action={createReviewAction}>
                         <input type='hidden' name='productId' value={productId} />
                         <input type='hidden' name='authorName' value={user?.firstName || 'user'} />
-                        <input type='hidden' name='authorImageUrl' value={user?.imageUrl} />
+                        <input type='hidden' name='authorImageUrl' value={user?.imageUrl || ''} />
+                        <RatingInput name='rating' />
+                        <TextAreaInput name='comment' labelText='feedback' defaultValue='Outstanding product!!!' />
+                        <SubmitButton className='mt-4' />
                     </FormContainer>
-                    <RatingInput name='rating' />
-                    <TextAreaInput name='comment' labelText='feedback' defaultValue='Outstanding product!!!' />
-                    <SubmitButton className='mt-4'/>
                 </Card>
             )}
         </div>
