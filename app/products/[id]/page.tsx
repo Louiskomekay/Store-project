@@ -5,6 +5,8 @@ import { formatCurrency } from '@/utils/format';
 import FavouriteToggleButton from '@/components/products/FavouriteToggleButton';
 import AddToCart from '@/components/single-product/AddtoCart';
 import ProductRating from '@/components/single-product/ProductRating';
+import SubmitReview from '@/components/reviews/SubmitReview';
+import ProductReviews from '@/components/reviews/ProductReviews';
 
 async function SingleProductPage({ params }: { params: { id: string } }) {
     const product = await fetchSingleProduct(params.id);
@@ -32,6 +34,9 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
                     <AddToCart productID={params.id} />
                 </div>
             </div>
+
+            <ProductReviews productId={params.id} />
+            <SubmitReview productId={params.id} />
         </section>
     )
 }
