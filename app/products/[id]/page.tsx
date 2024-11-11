@@ -1,5 +1,5 @@
 import BreadCrumbs from '@/components/single-product/BreadCrumbs';
-import { fetchSingleProduct } from '@/utils/actions';
+import { fetchSingleProduct, findExistingReview } from '@/utils/actions';
 import Image from 'next/image';
 import { formatCurrency } from '@/utils/format';
 import FavouriteToggleButton from '@/components/products/FavouriteToggleButton';
@@ -7,11 +7,14 @@ import AddToCart from '@/components/single-product/AddtoCart';
 import ProductRating from '@/components/single-product/ProductRating';
 import SubmitReview from '@/components/reviews/SubmitReview';
 import ProductReviews from '@/components/reviews/ProductReviews';
+import { auth } from '@clerk/nextjs/server';
 
 async function SingleProductPage({ params }: { params: { id: string } }) {
     const product = await fetchSingleProduct(params.id);
     const { name, image, company, description, price } = product;
     const dollarsAmount = formatCurrency(price);
+    const { userId } = auth();
+    const reviewDoesNotExits = userId && !(await findExistingReview(userId, product.id))
 
     return (
         <section>
@@ -34,9 +37,8 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
                     <AddToCart productID={params.id} />
                 </div>
             </div>
-
             <ProductReviews productId={params.id} />
-            <SubmitReview productId={params.id} />
+            {reviewDoesNotExits && <SubmitReview productId={params.id} />}
         </section>
     )
 }
