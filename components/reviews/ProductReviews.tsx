@@ -1,7 +1,6 @@
 import { fetchProductReviews } from "@/utils/actions"
 import SectionTitle from "../global/SectionTitle";
 import ReviewCard from "./ReviewCard";
-import { comment } from "postcss";
 
 async function ProductReviews({ productId }: { productId: string }) {
   const reviews = await fetchProductReviews(productId);

@@ -25,7 +25,7 @@ function ThirdColumn({ id, quantity }: { id: string, quantity: number }) {
 
     return (
         <div className='md:ml-8'>
-            <SelectProductAmount amount={amount} setAmount={handleAmountChange} mode={Mode.CartItem} isLoading={false} />
+            <SelectProductAmount amount={amount} setAmount={handleAmountChange} mode={Mode.CartItem} isLoading={isLoading} />
             <FormContainer action={removeCartItemAction}>
                 <input type="hidden" name='id' value={id} />
                 <SubmitButton size='sm' className='mt-4' text='remove' />

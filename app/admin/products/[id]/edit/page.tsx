@@ -1,4 +1,4 @@
-import { fetchAdminProductDetails, fetchAdminProducts, updateProductAction, updateProductImageAction } from '@/utils/actions';
+import { fetchAdminProductDetails, updateProductAction, updateProductImageAction } from '@/utils/actions';
 import FormContainer from '@/components/form/FormContainer';
 import FormInput from '@/components/form/FormInput';
 import PriceInput from '@/components/form/PriceInput';

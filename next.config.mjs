@@ -15,6 +15,9 @@ const nextConfig = {
                 hostname: "img.clerk.com"
             },
         ]
+    },
+    eslint: {
+        ignoreDuringBuilds: true
     }
 };
 

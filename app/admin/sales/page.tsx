@@ -7,8 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import SectionTitle from '@/components/global/SectionTitle';
-import { fetchAdminOrders, fetchUserOrders } from '@/utils/actions';
+import { fetchAdminOrders } from '@/utils/actions';
 import { formatCurrency, formatDate } from '@/utils/format';
 
 async function SalesPage() {
